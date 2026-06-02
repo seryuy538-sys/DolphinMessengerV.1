@@ -11,14 +11,16 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.14'
-      - name: Install dependencies
-        run: |
-          pip install --upgrade pip
-          pip install flet==0.24.0
+          python-version: '3.12'
       - name: Build APK
         run: |
-          flet build apk --name "Dolphin" --icon icon.png
+          pip install flet==0.24.0
+          # Создаем файл настроек прямо перед сборкой
+          echo 'app:
+            name: "Dolphin"
+            icon: "icon.png"' > flet.yaml
+          # Теперь вызываем сборку без аргументов, он сам подхватит flet.yaml
+          flet build apk
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
